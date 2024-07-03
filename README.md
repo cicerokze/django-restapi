@@ -1,35 +1,34 @@
 ## django-restapi
 
-# REST API Application developed with:
+## REST API Application developed with:
 - Python3
 - Django Rest
 - WSGI Server
 - SQLite Database
 
 ## Description
-
-# REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stacks: Python3, Django Rest, WSGI Server and SQLite Database.
+- REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stacks: Python3, Django Rest, WSGI Server and SQLite Database.
 
 ## Installation
-# Make sure you have Python3 installed in your machine
+1 - Make sure you have Python3 installed in your machine
 
-# Create a virtual environment to isolate package dependencies locally
+2 - Create a virtual environment to isolate package dependencies locally
 ```bash
 $ python3 -m venv env
 $ source env/bin/activate  # On Windows use `env\Scripts\activate`
 ```
 
-# Install Django and Django REST framework into the virtual environment
+3 - Install Django and Django REST framework into the virtual environment
 ```bash
 $ pip install djangorestframework
 ```
 
-# Generating Database
+4 - Generate Database
 ```bash
 $ python3 manage.py migrate
 ```
 
-# Create an admin user to make requests
+5 - Create an admin user to make requests
 ```bash
 $ python3 manage.py createsuperuser --username admin --email your_email@example.com
 ```
@@ -41,8 +40,7 @@ $ python3 manage.py runserver
 ```
 
 ## Requesting
-
-# Get Users
+- Get Users
 
 **GET** http://127.0.0.1:8000/users
 ```bash
