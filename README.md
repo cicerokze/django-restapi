@@ -1,10 +1,15 @@
 ## django-restapi
 
-## REST API Application developed with:
+REST API Application developed with:
+
 - Python3
 - Django Rest
 - WSGI Server
 - SQLite Database
+
+<a href="https://www.buymeacoffee.com/cicerokze" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="150" />
+</a>
 
 ## Description
 - REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stacks: Python3, Django Rest, WSGI Server and SQLite Database.
