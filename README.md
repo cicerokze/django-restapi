@@ -12,7 +12,7 @@ REST API Application developed with:
 </a>
 
 ## Description
-- REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stacks: Python3, Django Rest, WSGI Server and SQLite Database.
+- REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stack: Python3, Django Rest, WSGI Server and SQLite Database.
 
 ## Installation
 1 - Make sure you have Python3 installed in your machine
