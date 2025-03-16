@@ -28,8 +28,24 @@ SECRET_KEY = os.getenv('SECRET_KEY') if os.getenv('SECRET_KEY') else None
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'https://localhost:8000',
+]
+
+CSRF_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'https://localhost:8000',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'https://localhost:8000',
+]
 
 # Application definition
 
