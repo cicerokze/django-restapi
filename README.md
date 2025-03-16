@@ -23,7 +23,7 @@ $ python3 -m venv env
 $ source env/bin/activate  # On Windows use `env\Scripts\activate`
 ```
 
-3 - This project uses python-dotenv to manage its environment variables. To install python-dotenv run following command:
+3 - This project uses python-dotenv to manage its environment variables. To install python-dotenv run the following command:
 ```bash
 $ pipenv install python-dotenv
 ```
