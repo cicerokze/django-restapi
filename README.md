@@ -76,3 +76,21 @@ Enter host password for user 'admin':
     ]
 }
 ```
+
+## Optionally, you might access admin area by your preferred web browser
+
+1 - Navigate to 'http://localhost:8000' and check the screen is like the one bellow. Then, click on 'Log in' button located on top-right of screen.
+
+![Api Root](/assets/images/github/image-1.png)
+
+2 - You might see the 'Log in' area as following. Type your superuser and password to access admin area. The same user created before, with this intructions.
+
+![Log in area](/assets/images/github/image-2.png)
+
+3 - After the step before, check the screen is like bellow, in the root area of API where you might access your endpoints. Click on the endpoint '/users' or '/groups' and make a 'POST'.
+
+![Root area](/assets/images/github/image-3.png)
+
+4 - Now, you might use any method allowed as shown bellow.
+
+![Edit area](/assets/images/github/image-4.png)
