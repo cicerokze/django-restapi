@@ -3,7 +3,7 @@
 REST API Application developed with:
 
 - Python3
-- Django Rest
+- Django REST framework
 - WSGI Server
 - SQLite Database
 
@@ -20,23 +20,23 @@ REST API Application developed with:
 2 - Create a virtual environment to isolate package dependencies locally
 ```bash
 $ python3 -m venv env
-$ source env/bin/activate  # On Windows use `env\Scripts\activate`
+$ source env/bin/activate  # On Windows use `.\env\Scripts\activate`
 ```
 
-3 - This project uses python-dotenv to manage its environment variables. To install python-dotenv run following command:
+3 - Install Django REST framework into the virtual environment
+```bash
+$ pipenv install djangorestframework
+```
+
+4 - This project uses python-dotenv to manage its environment variables. To install python-dotenv run the following command:
 ```bash
 $ pipenv install python-dotenv
 ```
 
-4 - After install python-dotenv with pipenv, create a file .env in root of the project and add your variables as presented bellow:
+5 - After install python-dotenv, create a file .env in root of the project and add your variables as presented bellow:
 ```bash
-# Suggestion: move all the sensitive data to .env file, mainly the SECRET_KEY setted in settings.py as default by framework
+# Suggestion: move all the sensitive data to .env file, especially the SECRET_KEY
 SECRET_KEY="your_secret_key_here"
-```
-
-5 - Install Django and Django REST framework into the virtual environment
-```bash
-$ pip install djangorestframework
 ```
 
 6 - Generate Database
