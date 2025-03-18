@@ -58,24 +58,30 @@ else:
 
 ALLOWED_HOSTS = [
     'localhost',
+    os.environ.get('GITHUB_HOST'),
+    os.environ.get('HEROKU_HOST'),
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'https://localhost:8000',
     os.environ.get('GITHUB_HOST'),
+    os.environ.get('HEROKU_HOST'),
+    
 ]
 
 CSRF_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'https://localhost:8000',
     os.environ.get('GITHUB_HOST'),
+    os.environ.get('HEROKU_HOST'),
 ]
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8000',
     'https://localhost:8000',
     os.environ.get('GITHUB_HOST'),
+    os.environ.get("HEROKU_HOST"),
 ]
 
 # Application definition
