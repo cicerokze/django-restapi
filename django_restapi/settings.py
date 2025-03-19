@@ -59,6 +59,7 @@ ALLOWED_HOSTS = [
     'localhost',
     os.environ.get('GITHUB_HOST'),
     os.environ.get('HEROKU_HOST'),
+    os.environ.get('STAGE_HOST'),
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -66,6 +67,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://localhost:8000',
     os.environ.get('GITHUB_HOST'),
     os.environ.get('HEROKU_HOST'),
+    os.environ.get('STAGE_HOST'),
     
 ]
 
@@ -74,6 +76,7 @@ CSRF_ALLOWED_ORIGINS = [
     'https://localhost:8000',
     os.environ.get('GITHUB_HOST'),
     os.environ.get('HEROKU_HOST'),
+    os.environ.get('STAGE_HOST'),
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -81,6 +84,7 @@ CORS_ORIGIN_WHITELIST = [
     'https://localhost:8000',
     os.environ.get('GITHUB_HOST'),
     os.environ.get("HEROKU_HOST"),
+    os.environ.get('STAGE_HOST'),
 ]
 
 # Application definition
@@ -136,13 +140,30 @@ WSGI_APPLICATION = 'django_restapi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
+if IS_HEROKU_APP:
+    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
+    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
+    # automatically by Heroku when a database addon is attached to your Heroku app. See:
+    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres#application-config-vars
+    # https://github.com/jazzband/dj-database-url
+    DATABASES = {
+        "default": dj_database_url.config(
+            env="DATABASE_URL",
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        ),
+    }
+else:
+    # When running locally in development or in CI, a sqlite database file will be used instead
+    # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -177,9 +198,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "static/"
