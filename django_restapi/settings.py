@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 import secrets
 from pathlib import Path
+from dotenv import load_dotenv, dotenv_values
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,11 +57,42 @@ if IS_HEROKU_APP:
 else:
     ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0", "[::]"]
 
+GITHUB = os.environ.get('GITHUB_HOST')
+HEROKU = os.environ.get('HEROKU_HOST')
+STAGE = os.environ.get('STAGE_HOST')
+DEV = os.environ.get('DEV_HOST')
+PROTOCOLS = os.environ.get('PROTOCOLS')
+PROTOCOL = os.environ.get('PROTOCOL')
+
 ALLOWED_HOSTS = [
     'localhost',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get('HEROKU_HOST'),
-    os.environ.get('STAGE_HOST'),
+    GITHUB,
+    HEROKU,
+    STAGE,    
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    PROTOCOL + DEV,
+    PROTOCOLS + DEV,
+    PROTOCOLS + GITHUB,
+    PROTOCOLS + HEROKU,
+    PROTOCOLS + STAGE,  
+]
+
+CSRF_ALLOWED_ORIGINS = [
+    PROTOCOL + DEV,
+    PROTOCOLS + DEV,
+    PROTOCOLS + GITHUB,
+    PROTOCOLS + HEROKU,
+    PROTOCOLS + STAGE,  
+]
+
+CORS_ORIGIN_WHITELIST = [
+    PROTOCOL + DEV,
+    PROTOCOLS + DEV,
+    PROTOCOLS + GITHUB,
+    PROTOCOLS + HEROKU,
+    PROTOCOLS + STAGE, 
 ]
 
 # Application definition
@@ -73,7 +106,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_restapi',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
