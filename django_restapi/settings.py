@@ -62,31 +62,6 @@ ALLOWED_HOSTS = [
     os.environ.get('STAGE_HOST'),
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8000',
-    'https://localhost:8000',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get('HEROKU_HOST'),
-    os.environ.get('STAGE_HOST'),
-    
-]
-
-CSRF_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'https://localhost:8000',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get('HEROKU_HOST'),
-    os.environ.get('STAGE_HOST'),
-]
-
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8000',
-    'https://localhost:8000',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get("HEROKU_HOST"),
-    os.environ.get('STAGE_HOST'),
-]
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -98,7 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    'django_restapi',
 ]
 
 MIDDLEWARE = [
