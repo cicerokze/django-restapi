@@ -9,6 +9,8 @@ djangorestframework = "*"
 gunicorn = "*"
 whitenoise = "*"
 dj-database-url = "*"
+markdown = "*"
+django-filter = "*"
 
 [dev-packages]
 
