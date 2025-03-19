@@ -158,7 +158,8 @@ if IS_HEROKU_APP:
     # https://github.com/jazzband/dj-database-url
     DATABASES = {
         "default": dj_database_url.config(
-            env="DATABASE_URL",
+            default=BASE_DIR / 'db.sqlite3',
+            env='SQLITE_URL',
             conn_max_age=600,
             conn_health_checks=True,
             ssl_require=True,
@@ -173,7 +174,6 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
