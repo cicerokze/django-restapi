@@ -78,7 +78,8 @@ else:
     CSRF_TRUSTED_ORIGINS = [
         DEV,
         DEV_TO,
-        STAGE, 
+        STAGE,
+        PROD,
     ]
 
 # Application definition
