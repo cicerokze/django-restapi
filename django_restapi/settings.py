@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 import secrets
 from pathlib import Path
+from dotenv import load_dotenv, dotenv_values
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,12 +36,23 @@ DEBUG = os.environ.get("ENVIRONMENT") == "development"
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
 IS_HEROKU_APP = "DYNO" in os.environ and "CI" not in os.environ
 
+DEV = os.environ.get('DEV_HOST')
+DEV_AH = os.environ.get('DEV_AH_HOST')
+DEV_TO = os.environ.get('DEV_TO_HOST')
+STAGE = os.environ.get('STAGE_HOST')
+PROD = os.environ.get('PROD_HOST')
+
 if IS_HEROKU_APP:
     # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS`, since the Heroku router performs
     # validation of the Host header in the incoming HTTP request. On other platforms you may need to
     # list the expected hostnames explicitly in production to prevent HTTP Host header attacks. See:
     # https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-ALLOWED_HOSTS
     ALLOWED_HOSTS = ["*"]
+
+    CSRF_TRUSTED_ORIGINS = [
+        STAGE,
+        PROD,  
+    ]
 
     # Redirect all non-HTTPS requests to HTTPS. This requires that:
     # 1. Your app has a TLS/SSL certificate, which all `*.herokuapp.com` domains do by default.
@@ -53,35 +66,21 @@ if IS_HEROKU_APP:
     # https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
     SECURE_SSL_REDIRECT = True
 else:
-    ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0", "[::]"]
+    ALLOWED_HOSTS = [
+        ".localhost",
+        "127.0.0.1",
+        "[::1]",
+        "0.0.0.0",
+        "[::]",
+        DEV_AH
+    ]
 
-ALLOWED_HOSTS = [
-    'localhost',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get('HEROKU_HOST'),
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8000',
-    'https://localhost:8000',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get('HEROKU_HOST'),
-    
-]
-
-CSRF_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'https://localhost:8000',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get('HEROKU_HOST'),
-]
-
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8000',
-    'https://localhost:8000',
-    os.environ.get('GITHUB_HOST'),
-    os.environ.get("HEROKU_HOST"),
-]
+    CSRF_TRUSTED_ORIGINS = [
+        DEV,
+        DEV_TO,
+        STAGE,
+        PROD,
+    ]
 
 # Application definition
 
@@ -96,6 +95,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,13 +143,14 @@ WSGI_APPLICATION = 'django_restapi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# When running locally in development or in CI, a sqlite database file will be used instead
+# to simplify initial setup. Longer term it's recommended to use Postgres locally too.
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -177,9 +185,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "static/"
