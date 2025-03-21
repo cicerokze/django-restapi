@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 import secrets
 from pathlib import Path
-import dj_database_url
 from dotenv import load_dotenv, dotenv_values
 load_dotenv()
 
@@ -37,12 +36,23 @@ DEBUG = os.environ.get("ENVIRONMENT") == "development"
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
 IS_HEROKU_APP = "DYNO" in os.environ and "CI" not in os.environ
 
+DEV = os.environ.get('DEV_HOST')
+DEV_AH = os.environ.get('DEV_AH_HOST')
+DEV_TO = os.environ.get('DEV_TO_HOST')
+STAGE = os.environ.get('STAGE_HOST')
+PROD = os.environ.get('PROD_HOST')
+
 if IS_HEROKU_APP:
     # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS`, since the Heroku router performs
     # validation of the Host header in the incoming HTTP request. On other platforms you may need to
     # list the expected hostnames explicitly in production to prevent HTTP Host header attacks. See:
     # https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-ALLOWED_HOSTS
     ALLOWED_HOSTS = ["*"]
+
+    CSRF_TRUSTED_ORIGINS = [
+        STAGE,
+        PROD,  
+    ]
 
     # Redirect all non-HTTPS requests to HTTPS. This requires that:
     # 1. Your app has a TLS/SSL certificate, which all `*.herokuapp.com` domains do by default.
@@ -56,45 +66,20 @@ if IS_HEROKU_APP:
     # https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
     SECURE_SSL_REDIRECT = True
 else:
-    ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0", "[::]"]
+    ALLOWED_HOSTS = [
+        ".localhost",
+        "127.0.0.1",
+        "[::1]",
+        "0.0.0.0",
+        "[::]",
+        DEV_AH
+    ]
 
-GITHUB = os.environ.get('GITHUB_HOST')
-HEROKU = os.environ.get('HEROKU_HOST')
-STAGE = os.environ.get('STAGE_HOST')
-DEV = os.environ.get('DEV_HOST')
-PROTOCOLS = os.environ.get('PROTOCOLS')
-PROTOCOL = os.environ.get('PROTOCOL')
-
-ALLOWED_HOSTS = [
-    'localhost',
-    GITHUB,
-    HEROKU,
-    STAGE,    
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    PROTOCOL + DEV,
-    PROTOCOLS + DEV,
-    PROTOCOLS + GITHUB,
-    PROTOCOLS + HEROKU,
-    PROTOCOLS + STAGE,  
-]
-
-CSRF_ALLOWED_ORIGINS = [
-    PROTOCOL + DEV,
-    PROTOCOLS + DEV,
-    PROTOCOLS + GITHUB,
-    PROTOCOLS + HEROKU,
-    PROTOCOLS + STAGE,  
-]
-
-CORS_ORIGIN_WHITELIST = [
-    PROTOCOL + DEV,
-    PROTOCOLS + DEV,
-    PROTOCOLS + GITHUB,
-    PROTOCOLS + HEROKU,
-    PROTOCOLS + STAGE, 
-]
+    CSRF_TRUSTED_ORIGINS = [
+        DEV,
+        DEV_TO,
+        STAGE, 
+    ]
 
 # Application definition
 
@@ -109,6 +94,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -149,31 +142,15 @@ WSGI_APPLICATION = 'django_restapi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# When running locally in development or in CI, a sqlite database file will be used instead
+# to simplify initial setup. Longer term it's recommended to use Postgres locally too.
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
-if IS_HEROKU_APP:
-    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
-    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
-    # automatically by Heroku when a database addon is attached to your Heroku app. See:
-    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres#application-config-vars
-    # https://github.com/jazzband/dj-database-url
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=BASE_DIR / 'db.sqlite3',
-            env='SQLITE_URL',
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        ),
-    }
-else:
-    # When running locally in development or in CI, a sqlite database file will be used instead
-    # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
