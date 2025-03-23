@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 import secrets
+import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv, dotenv_values
 load_dotenv()
@@ -49,10 +50,7 @@ if IS_HEROKU_APP:
     # https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-ALLOWED_HOSTS
     ALLOWED_HOSTS = ["*"]
 
-    CSRF_TRUSTED_ORIGINS = [
-        STAGE,
-        PROD,  
-    ]
+    CSRF_TRUSTED_ORIGINS = [STAGE, PROD]
 
     # Redirect all non-HTTPS requests to HTTPS. This requires that:
     # 1. Your app has a TLS/SSL certificate, which all `*.herokuapp.com` domains do by default.
@@ -75,12 +73,7 @@ else:
         DEV_AH
     ]
 
-    CSRF_TRUSTED_ORIGINS = [
-        DEV,
-        DEV_TO,
-        STAGE,
-        PROD,
-    ]
+    CSRF_TRUSTED_ORIGINS = [DEV, DEV_TO, STAGE, PROD]
 
 # Application definition
 
@@ -139,18 +132,32 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_restapi.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# When running locally in development or in CI, a sqlite database file will be used instead
-# to simplify initial setup. Longer term it's recommended to use Postgres locally too.
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if IS_HEROKU_APP:
+    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
+    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
+    # automatically by Heroku when a database addon is attached to your Heroku app. See:
+    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres#application-config-vars
+    # https://github.com/jazzband/dj-database-url
+    DATABASES = {
+        "default": dj_database_url.config(
+            env="DATABASE_URL",
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        ),
     }
-}
+else:
+    # When running locally in development or in CI, a sqlite database file will be used instead
+    # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
