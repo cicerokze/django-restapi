@@ -31,7 +31,7 @@ $ pip install
 
 4 - After installing dependencies, create a file .env in root of the project and add your variables as presented bellow:
 ```bash
-# Suggestion: move all the sensitive data to .env file, especially the SECRET_KEY
+# Suggestion: move all the sensitive data to .env file, especially the SECRET_KEY. Check settings.py for other requirements to be added to the .env file
 SECRET_KEY="your_secret_key_here"
 ```
 
