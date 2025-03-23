@@ -3,7 +3,7 @@
     "description": "REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stacks: Python3, Django Rest, WSGI Server and SQLite Database. ",
     "repository": "https://github.com/cicerokze/django-restapi",
     "website": "https://djreap.cicerokze.dev",
-    "logo": "https://small-sharp-tool.com/logo.svg",
+    "logo": "",
     "success_url": "/",
     "scripts": {
         "postdeploy": "bundle exec rake bootstrap"

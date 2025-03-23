@@ -4,47 +4,43 @@ REST API Application developed with:
 
 - Python3
 - Django REST framework
-- WSGI Server
-- SQLite Database
+- WSGI (Gunicorn)
+- SQLite (Development)
+- PostgreSQL (Production)
 
 <a href="https://www.buymeacoffee.com/cicerokze" target="_blank">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="150" />
 </a>
 
 ## Description
-- REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stack: Python3, Django Rest, WSGI Server and SQLite Database.
+- REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stack: Python3, Django REST Framework, WSGI (Gunicorn) and SQLite Database.
 
 ## Installation
 1 - Make sure you have Python3 installed in your machine
 
-2 - Create a virtual environment to isolate package dependencies locally
+2 - Create and activate a virtual environment to isolate package dependencies locally
 ```bash
 $ python3 -m venv env
 $ source env/bin/activate  # On Windows use `.\env\Scripts\activate`
 ```
 
-3 - Install Django REST framework into the virtual environment
+3 - This application uses Pipfile and Pipfile.lock to manage its dependencies. Therefore, run the command below in the same directory as Pipefile to install them:
 ```bash
-$ pipenv install djangorestframework
+$ pip install 
 ```
 
-4 - This project uses python-dotenv to manage its environment variables. To install python-dotenv run the following command:
-```bash
-$ pipenv install python-dotenv
-```
-
-5 - After install python-dotenv, create a file .env in root of the project and add your variables as presented bellow:
+4 - After installing dependencies, create a file .env in root of the project and add your variables as presented bellow:
 ```bash
 # Suggestion: move all the sensitive data to .env file, especially the SECRET_KEY
 SECRET_KEY="your_secret_key_here"
 ```
 
-6 - Generate Database
+5 - Generate Database
 ```bash
 $ python3 manage.py migrate
 ```
 
-7 - Create an admin user to make requests
+6 - Create an admin user to make requests
 ```bash
 $ python3 manage.py createsuperuser --username admin --email your_email@example.com
 ```
