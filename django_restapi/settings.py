@@ -37,10 +37,18 @@ DEBUG = os.environ.get("ENVIRONMENT") == "development"
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
 IS_HEROKU_APP = "DYNO" in os.environ and "CI" not in os.environ
 
+# SECURITY WARNING: keep these environment variables in .env file
+# DEV - used to set it in CSRF_TRUSTED_ORIGINS when in development environment
 DEV = os.environ.get('DEV_HOST')
+# DEV_AH - used to set codespace host in ALLOWED_HOSTS
 DEV_AH = os.environ.get('DEV_AH_HOST')
+# DEV_TO - used to set codespace host in CSRF_TRUSTED_ORIGINS
 DEV_TO = os.environ.get('DEV_TO_HOST')
+
+# It is not necessary to define STAGE and PROD in the .env file if the intention is to run locally only
+# STAGE - used to get STAGE variable from homolog environmet
 STAGE = os.environ.get('STAGE_HOST')
+# PROD - used to get PROD variable from production environment
 PROD = os.environ.get('PROD_HOST')
 
 if IS_HEROKU_APP:
