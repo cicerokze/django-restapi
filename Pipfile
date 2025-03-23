@@ -5,6 +5,13 @@ name = "pypi"
 
 [packages]
 python-dotenv = "*"
+djangorestframework = "*"
+gunicorn = "*"
+whitenoise = "*"
+dj-database-url = "*"
+markdown = "*"
+django-filter = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
