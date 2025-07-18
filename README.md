@@ -8,10 +8,6 @@ REST API Application developed with:
 - SQLite (Development)
 - PostgreSQL (Production)
 
-<a href="https://www.buymeacoffee.com/cicerokze" target="_blank">
-    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="150" />
-</a>
-
 ## Description
 - REST API developed for an experiment of a boilerplate/Scaffold with Django Framework. This application works with the following tech stack: Python3, Django REST Framework, WSGI (Gunicorn) and SQLite Database.
 
